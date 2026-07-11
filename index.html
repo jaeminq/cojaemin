@@ -39,7 +39,7 @@ body {
 //const boxes = {"3":{"x":374,"y":150,"text":"text"},"4":{"x":650,"y":375,"text":"text"},"5":{"x":374,"y":375,"text":"text"},"6":{"x":374,"y":256,"text":"text"},"7":{"x":875,"y":252,"text":"text"},"8":{"x":877,"y":313,"text":"text"},"9":{"x":30,"y":30,"text":"text"},"box1":{"x":76,"y":219,"text":"Things to study"},"box2":{"x":52,"y":630,"text":"Study notes"},"box3":{"x":39,"y":725,"text":"Homework"}};
 let boxes = {};
 const ID=(()=>{
-    next=Object.keys(boxes).length;
+    let next=Object.keys(boxes).length;
     return ()=> next++;
 })()
 // ---------- Render ----------
@@ -50,6 +50,7 @@ async function loadNotes() {
     boxes = await response.json();
     renderBoxes();
 }
+loadNotes();
 
 function renderBoxes() {
     for (const id in boxes) {
@@ -104,7 +105,6 @@ document.addEventListener("mousemove", (e) => {
     // Keep model synchronized
     boxes[activeBox.id].x = x;
     boxes[activeBox.id].y = y;
-    boxes[activeBox.id].text = JSON.JSON(activeBox.textContent);
 });
 
 document.addEventListener("mouseup", () => {
@@ -117,7 +117,12 @@ document.addEventListener("mouseup", () => {
 
     console.log(boxes); // Current positions
 });
+    
+document.addEventListener("input", e => {
+    if (!e.target.classList.contains("box")) return;
 
+    boxes[e.target.id].text = e.target.textContent;
+});
 
 addBoxBtn.onclick=()=>{
     const id=ID();
@@ -143,7 +148,7 @@ downloadBtn.onclick=()=>{
     link.click();
 }
 
-loadBtn.onclick= e => {
+loadBtn.onchange= e => {
         const file = e.target.files[0];
 
         const reader = new FileReader();

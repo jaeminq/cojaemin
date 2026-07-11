@@ -36,12 +36,21 @@ body {
 <button id="downloadBtn">download note</button>
 <script>
 // Model
-const boxes = {"3":{"x":374,"y":150,"text":"text"},"4":{"x":650,"y":375,"text":"text"},"5":{"x":374,"y":375,"text":"text"},"6":{"x":374,"y":256,"text":"text"},"7":{"x":875,"y":252,"text":"text"},"8":{"x":877,"y":313,"text":"text"},"9":{"x":30,"y":30,"text":"text"},"box1":{"x":76,"y":219,"text":"Things to study"},"box2":{"x":52,"y":630,"text":"Study notes"},"box3":{"x":39,"y":725,"text":"Homework"}};
+//const boxes = {"3":{"x":374,"y":150,"text":"text"},"4":{"x":650,"y":375,"text":"text"},"5":{"x":374,"y":375,"text":"text"},"6":{"x":374,"y":256,"text":"text"},"7":{"x":875,"y":252,"text":"text"},"8":{"x":877,"y":313,"text":"text"},"9":{"x":30,"y":30,"text":"text"},"box1":{"x":76,"y":219,"text":"Things to study"},"box2":{"x":52,"y":630,"text":"Study notes"},"box3":{"x":39,"y":725,"text":"Homework"}};
+let boxes = {};
 const ID=(()=>{
     next=Object.keys(boxes).length;
     return ()=> next++;
 })()
 // ---------- Render ----------
+
+
+async function loadNotes() {
+    const response = await fetch("note.json");
+    boxes = await response.json();
+    renderBoxes();
+}
+
 function renderBoxes() {
     for (const id in boxes) {
         renderBox(id, boxes[id]);
@@ -62,7 +71,6 @@ function renderBox(id, box){
     document.body.appendChild(div);
 }
 
-renderBoxes();
 
 // ---------- Event Delegation ----------
 let activeBox = null;

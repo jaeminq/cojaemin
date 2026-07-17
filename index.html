@@ -127,7 +127,7 @@ function renderBox(id, boxData) {
     div.id = id;
     div.className = "box";
     div.contentEditable = true;
-    div.textContent = boxData.text || "";
+    div.innerHTML = boxData.text || "";
 
     div.style.left = (boxData.x || 30) + "px";
     div.style.top = (boxData.y || 30) + "px";
